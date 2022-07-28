@@ -37,6 +37,11 @@ class  Budget {
         
     }
 
+    deleteExpense(id){
+        this.expenses = this.expenses.filter( expense => expense.id !== id);
+        this.calculateRemaining()
+    }
+
 }
 
      
@@ -77,7 +82,7 @@ class UI {
 
 
     }
-    addExpenseList(expense){
+    showExpenses(expense){
 
         this.clearHTML()
         
@@ -103,6 +108,9 @@ class UI {
             const btnDelete = document.createElement('button')
             btnDelete.classList.add('btn','btn-danger','delete-expense')
             btnDelete.innerHTML = 'Delete &times'
+            btnDelete.onclick = () => {
+               deleteExpense(id)
+            }
 
             
             
@@ -140,12 +148,17 @@ class UI {
             remainingDiv.classList.remove('alert-success')
             remainingDiv.classList.add('alert-warning')
 
+        }else{
+            remainingDiv.classList.remove('alert-warning','alert-danger')
+            remainingDiv.classList.add('alert-success')
         }
 
 
         if( remaining <= 0){
-            ui.printAlert('Your budget is not enough','error')
+            ui.printAlert('Your budget is sold out','error')
             form.querySelector('button[type="submit"]').disabled = true
+        }else{
+            form.querySelector('button[type="submit"]').disabled = false
         }
         
 
@@ -210,7 +223,7 @@ function addExpenses(e){
 
     //print expenses
     const {expenses, remaining} = budget;
-    ui.addExpenseList(expenses)
+    ui.showExpenses(expenses)
 
     ui.updateRemaining(remaining)
 
@@ -221,5 +234,19 @@ function addExpenses(e){
 
 
 
+
+}
+
+function deleteExpense (id) {
+
+    budget.deleteExpense(id)
+
+
+    const {expenses,remaining} = budget
+    ui.showExpenses(expenses)
+
+    ui.updateRemaining(remaining)
+
+    ui.comprobateExpense(budget)
 
 }
