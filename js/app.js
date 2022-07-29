@@ -33,7 +33,7 @@ class  Budget {
         const spent = this.expenses.reduce((budget, expense) => budget + expense.price, 0);
         this.remaining = this.budget - spent
         
-        console.log(spent)
+    
         
     }
 
@@ -201,11 +201,17 @@ function addExpenses(e){
     const  request = document.querySelector('#gasto').value
     const  price = Number(document.querySelector('#cantidad').value)
 
+
+     console.log(request,price)
+
+
     //validate fields of expenses
     if(request === '' || price <= 0){
         ui.printAlert('All fields are necesary','error');
+        return;
     } else if(price <= 0 || isNaN(price)){
         ui.printAlert('Price invalid','error')
+        return;
 
     }
 
